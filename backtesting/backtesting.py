@@ -1413,7 +1413,6 @@ class Backtest:
                 # a pool of processes to compute results in parallel.
                 # Otherwise (i.e. on Windos), sequential computation will be "faster".
                 if mp.get_start_method(allow_none=False) == 'fork':
-                    ray.init()
                     with ProcessPoolExecutor() as executor:
                         futures = [ray.remote(Backtest._mp_task).remote(backtest_uuid, i) for i in range(len(param_batches))]
                         for future in _tqdm(as_completed(futures), total=len(futures), desc='Backtest.optimize'):
@@ -1428,7 +1427,6 @@ class Backtest:
                     #         batch_index, values = future.result()
                     #         for value, params in zip(values, param_batches[batch_index]):
                     #             heatmap[tuple(params.values())] = value
-                    ray.shutdown()
                 else:
                     if os.name == 'posix':
                         warnings.warn("For multiprocessing support in `Backtest.optimize()` "
