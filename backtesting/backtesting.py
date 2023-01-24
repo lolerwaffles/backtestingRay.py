@@ -6,6 +6,7 @@ module directly, e.g.
     from backtesting import Backtest, Strategy
 """
 import multiprocessing as mp
+import ray
 import os
 import sys
 import warnings
